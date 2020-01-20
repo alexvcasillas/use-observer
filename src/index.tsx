@@ -28,7 +28,7 @@ export function useObserver({ threshold, rootMargin = '0px' }: ObserverType) {
   useEffect(() => {
     // @ts-ignore
     if (ref.current) iObserverRef.current.observe(ref.current);
-    () => {
+    return () => {
       if (ref.current) {
         // @ts-ignore
         iObserverRef.current.unobserve(ref.current);
