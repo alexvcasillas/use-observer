@@ -1,6 +1,6 @@
 {
   "name": "@alexvcasillas/use-observer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React Intersection Observer implementation done right!",
   "repository": "https://github.com/alexvcasillas/use-observer.git",
   "author": "Alex Casillas",
@@ -15,7 +15,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --env=jsdom",
-    "lint": "tsdx lint"
+    "lint": "tsdx lint",
+    "prepare": "tsdx build"
   },
   "peerDependencies": {
     "react": ">=16"
