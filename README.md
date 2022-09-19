@@ -19,16 +19,12 @@ npm i -s @alexvcasillas/use-observer
 ## Usage
 
 ```tsx
-import { useObserver } from "@alexvcasillas/use-observer";
+import { useObserver } from '@alexvcasillas/use-observer';
 
 function MyComponent() {
   const { inView, ref } = useObserver({ threshold: 0.5 });
 
-  return (
-    <div ref={ref}>
-      Is in view? {inView}
-    </div>
-  )
+  return <div ref={ref}>Is in view? {inView}</div>;
 }
 ```
 
@@ -40,12 +36,15 @@ The API of **useObserver** is pretty straightforward, I aimed to keep a consiste
 type ObserverType {
   threshold: number,
   rootMargin?: string,
+  once?: boolean
 }
 ```
 
 The threshold property indicates how much of the component needs to be displayed within the viewport to trigger the animation. It will take a number from 0 to 1 to indicate the percentage of the component that's on the viewport, meaning that 0.5 will be equals to the 50% of the component.
 
 The rootMargin property is a string with syntax similar to that of the CSS margin property. Each side of the rectangle represented by rootMargin is added to the corresponding side in the root element's bounding box before the intersection test is performed. This lets you, for example, adjust the bounds outward so that the target element is considered 100% visible even if a certain number of pixels worth of width or height is clipped away, or treat the target as partially hidden if an edge is too close to the edge of the root's bounding box. [Reference](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin).
+
+The once property is a boolean that indicates whether the observable should be performed constantly or only once. This is ideal if you'd like, for instance, to detect the appearance of a certain element only once, eg: a component that fades in when is in the viewport but does not fade out when it's out of the viewport.
 
 **useObserver** will return an object with two properties:
 
@@ -62,6 +61,6 @@ You will have to use the **ref** property to create a reference to the element w
 
 ## Used by
 
-* [React Spring POP!](https://github.com/alexvcasillas/react-spring-pop): Animate React elements when they enter the viewport with physics based animations.
+- [React Spring POP!](https://github.com/alexvcasillas/react-spring-pop): Animate React elements when they enter the viewport with physics based animations.
 
 If you'd like to add your library that uses **useObserver** feel free to add a PR modifying the above line and I will gladly merge it :)
