@@ -12,7 +12,7 @@ export function useObserver({
   once = false,
 }: ObserverType) {
   const [inView, setInView] = useState<boolean>();
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<any>();
   const iObserverRef = useRef<IntersectionObserver>();
 
   const updateInView = useCallback(
