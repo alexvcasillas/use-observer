@@ -1,42 +1,58 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 type ObserverType = {
-  threshold: number,
-  rootMargin?: string,
+  threshold: number;
+  rootMargin?: string;
+  once?: boolean;
 };
 
-export function useObserver({ threshold, rootMargin = '0px' }: ObserverType) {
-
+export function useObserver({
+  threshold,
+  rootMargin = '0px',
+  once = false,
+}: ObserverType) {
   const [inView, setInView] = useState<boolean>();
-  const ref = useRef<any>();
+  const ref = useRef<HTMLElement>();
   const iObserverRef = useRef<IntersectionObserver>();
 
-  useEffect(() => {
-    let options = {
-      root: null,
-      rootMargin: rootMargin,
-      threshold: threshold
-    }
-    
-    iObserverRef.current = new IntersectionObserver((entries) => {
-      if (inView !== entries[0].isIntersecting) {
-        setInView(entries[0].isIntersecting);
+  const updateInView = useCallback(
+    (val: boolean) => {
+      if (inView && once) {
+        console.log({ inView, once });
+
+        return;
       }
-    }, options);
-  }, []);
+      setInView(val);
+    },
+    [inView, once]
+  );
 
   useEffect(() => {
-    // @ts-ignore
-    if (ref.current) iObserverRef.current.observe(ref.current);
-    return () => {
-      if (ref.current) {
-        // @ts-ignore
-        iObserverRef.current.unobserve(ref.current);
-        // @ts-ignore
-        iObserverRef.current.disconnect();
-      }
+    const options = {
+      root: null,
+      rootMargin: rootMargin,
+      threshold: threshold,
+    };
+
+    iObserverRef.current = new IntersectionObserver(entries => {
+      updateInView(entries[0].isIntersecting);
+    }, options);
+  });
+
+  useEffect(() => {
+    if (ref.current) {
+      iObserverRef?.current?.observe(ref.current);
     }
-  }, [ref.current])
+
+    const reference = ref.current;
+
+    return () => {
+      if (reference) {
+        iObserverRef.current?.unobserve(reference);
+        iObserverRef.current?.disconnect();
+      }
+    };
+  });
 
   return { inView, ref };
 }
