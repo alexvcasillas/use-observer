@@ -18,8 +18,6 @@ export function useObserver({
   const updateInView = useCallback(
     (val: boolean) => {
       if (inView && once) {
-        console.log({ inView, once });
-
         return;
       }
       setInView(val);
